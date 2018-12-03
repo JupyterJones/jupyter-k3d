@@ -69,7 +69,10 @@ $ docker run -d -p 8888:8888 -u root jacknorthrup/jupyter-k3d:latest
 or::
 
 $ docker run -d -p HOST_PORT:CONTAINER_PORT --user USERNAME IMAGE
-$ docker run -d -p 8888:8888 --user root jacknorthrup/jupyter-k3d:latest
+$ docker run -d -p 8888:8888 --user root -v $(pwd)/work:/home/jovyan/work jacknorthrup/jupyter-k3d:latest
+
+$ docker run -d -p 8888:8888 --user root -v $(pwd)/K3D-jupyter:/home/jovyan/K3D-jupyter jacknorthrup/jupyter-k3d:latest
+
 Where:
 
 Docker Pull Command
