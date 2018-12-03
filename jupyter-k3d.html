@@ -1,0 +1,97 @@
+<html>
+<head>
+<title>programing-documents-index</title>
+<link rel="stylesheet" type="text/css" href="mystyle.css">
+</head>
+<body>
+<div class = "sectT">
+<h1>Run Interactively</h1>
+
+
+Run the docker using -i -t or -it together in order use a tty shell.<br />
+<pre>
+$ docker run -it jacknorthrup/jupyter-k3d
+$ docker run -it jacknorthrup/jupyter-k3d bash
+</pre>
+<p>
+Where:<br />
+
+-i or --interactive -- keep STDIN open even if not attached,<br />
+-t or --tty -- allocate a pseudo-TTY.<br />
+</p>
+
+Jupyter Notebook with K3D<br />
+Full Description<br />
+.. contents:: Table of contents<br />
+:depth: 2<br />
+
+Full description<br />
+The korniichuk/jupyter-notebook <https://hub.docker.com/r/korniichuk/jupyter-notebook/>_ Docker image with K3D.<br />
+
+Docker Hub
+The korniichuk/jupyter-k3d-notebook <https://hub.docker.com/r/korniichuk/jupyter-k3d-notebook/>_ repo.
+
+Quickstart
+The following command starts a container with the Notebook server listening for HTTP connections on port 8888 without authentication configured::
+
+$ docker run -d -p 8888:8888 -u root korniichuk/jupyter-k3d-notebook
+User guide
+Detached
+To start a container in detached mode, you use -d or --detach option. By design, containers started in detached mode exit when the root process used to run the container exits. A container in detached mode cannot be automatically removed when it stops, this means you cannot use the --rm option with -d option.
+::
+
+$ docker run -d -p HOST_PORT:CONTAINER_PORT -u USERNAME IMAGE
+$ docker run -d -p 8888:8888 -u root korniichuk/jupyter-k3d-notebook
+or::
+
+$ docker run --detach -p HOST_PORT:CONTAINER_PORT -u USERNAME IMAGE
+$ docker run --detach -p 8888:8888 -u root korniichuk/jupyter-k3d-notebook
+Where:
+
+-d or --detach -- run container in background and print container ID.
+Ports
+You can bind Docker containers to specific ports using the -p or --publish option, for example::
+
+$ docker run -d -p HOST_PORT:CONTAINER_PORT -u USERNAME IMAGE
+$ docker run -d -p 8888:8888 -u root korniichuk/jupyter-k3d-notebook
+or::
+
+$ docker run -d --publish HOST_PORT:CONTAINER_PORT -u USERNAME IMAGE
+$ docker run -d --publish 8888:8888 -u root korniichuk/jupyter-k3d-notebook
+Where:
+
+-p or --publish -- publish a container's port(s) to the host.
+Users
+You can start a container with root user by passing the -u option::
+
+$ docker run -d -p HOST_PORT:CONTAINER_PORT -u USERNAME IMAGE
+$ docker run -d -p 8888:8888 -u root korniichuk/jupyter-k3d-notebook
+or::
+
+$ docker run -d -p HOST_PORT:CONTAINER_PORT --user USERNAME IMAGE
+$ docker run -d -p 8888:8888 --user root korniichuk/jupyter-k3d-notebook
+Where:
+
+-u or --user -- username or UID (format: <name|uid>[:<group|gid>]).
+
+
+Own try.jupyter.org
+First, the following commands launches a docker container for each user that requests one::
+
+$ export TOKEN=$( head -c 30 /dev/urandom | xxd -p )
+$ docker run --net=host -d -e CONFIGPROXY_AUTH_TOKEN=$TOKEN \
+--name=proxy jupyter/configurable-http-proxy \
+--default-target http://127.0.0.1:9999
+$ docker run --net=host -d -e CONFIGPROXY_AUTH_TOKEN=$TOKEN \
+-v /var/run/docker.sock:/docker.sock jupyter/tmpnb python orchestrate.py \
+--image='korniichuk/jupyter-k3d-notebook' --command="ipython notebook \
+--NotebookApp.base_url={base_path} --ip=0.0.0.0 --port {port}"
+Second, visit your host on port 8000.
+
+Docker Pull Command
+
+docker pull korniichuk/jupyter-k3d-notebook
+Owner
+korniichuk
+Source Repository
+  korniichuk/jupyter-k3d-notebook
