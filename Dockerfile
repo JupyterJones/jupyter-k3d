@@ -2,12 +2,13 @@ FROM jupyter/scipy-notebook:1fbaef522f17
 
 USER jovyan
 
-RUN git clone https://github.com/K3D-tools/K3D-jupyter.git
+RUN git clone https://github.com/JupyterJones/K3D-jupyter.git
 
 WORKDIR K3D-jupyter
 
 RUN pip install jupyter-pip ipywidgets
 RUN pip install k3d
+RUN pip install nibabel
 
 RUN jupyter nbextension install --py --user widgetsnbextension
 RUN jupyter nbextension install --py --user k3d
